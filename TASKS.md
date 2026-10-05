@@ -7,4 +7,4 @@ Status: `[ ]` todo · `[~]` in progress · `[x]` done.
 - [ ] C03 Own icon
 - [ ] C04 Create `hdansou/logseq-inkwell-companion` on GitHub, push, tag v0.1.0 (owner decision)
 - [ ] C05 Marketplace PR (`marketplace/manifest.json` + icon)
-- [ ] C06 Theme repo: remove `index.html`/`main` and its test/docs, keep the 600px CSS fallback, point README/DESIGN here, release v1.1.1 CSS-only
+- [x] C06 (2026-10-05) Theme repo: script removed and no CSS height either (owner: keep core's 240px, the companion does the fitting). Nothing to release for the theme; README and DESIGN there point here
