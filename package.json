@@ -1,0 +1,29 @@
+{
+  "name": "logseq-inkwell-companion",
+  "version": "0.1.0",
+  "description": "Small UX fixes for Logseq DB graphs that CSS alone can't make. Works with any theme; made to sit next to the Inkwell theme.",
+  "author": "Danzu",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hdansou/logseq-inkwell-companion.git"
+  },
+  "homepage": "https://github.com/hdansou/logseq-inkwell-companion#readme",
+  "bugs": {
+    "url": "https://github.com/hdansou/logseq-inkwell-companion/issues"
+  },
+  "keywords": ["logseq", "logseq-plugin", "inkwell", "ux"],
+  "scripts": {
+    "test": "node --test",
+    "package": "sh tools/package.sh"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "logseq": {
+    "id": "logseq-inkwell-companion",
+    "title": "Inkwell Companion",
+    "icon": "./assets/icon.png",
+    "main": "index.html"
+  }
+}

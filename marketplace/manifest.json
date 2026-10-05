@@ -1,0 +1,10 @@
+{
+  "title": "Inkwell Companion",
+  "description": "Small UX fixes for Logseq DB graphs that CSS alone can't make. Works with any theme.",
+  "author": "Danzu",
+  "repo": "hdansou/logseq-inkwell-companion",
+  "icon": "icon.png",
+  "web": true,
+  "supportsDB": true,
+  "supportsDBOnly": true
+}

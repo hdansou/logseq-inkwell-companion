@@ -1,0 +1,8 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Inkwell Companion</title>
+<!-- Logseq needs @logseq/libs for the plugin handshake; pinned, with integrity. Features need the network anyway. -->
+<script src="https://cdn.jsdelivr.net/npm/@logseq/libs@0.3.4/dist/lsplugin.user.js" integrity="sha384-8u4U8ulMoP2IdH053mS+GNOzHDCnOif3PWUsC2jZB00WpT2wNkMEAUSa0fcQ78E1" crossorigin="anonymous"></script>
+<!-- One classic script per feature (each registers itself on window.InkwellCompanion), then the loader. -->
+<script src="./src/features/tweet-height.js"></script>
+<script src="./src/main.js"></script>
