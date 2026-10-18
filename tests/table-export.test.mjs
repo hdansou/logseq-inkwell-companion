@@ -34,6 +34,13 @@ describe('table-export formats', () => {
   test('TSV flattens tabs and line breaks so each row stays one spreadsheet row', () => {
     assert.equal(x.toTsv(['A', 'B'], [['x\ty', 'one\ntwo'], [true, ['p', 'q']]]), 'A\tB\nx y\tone two\ntrue\tp; q')
   })
+  test('formula-like text stays text in CSV and TSV (leading \'), numbers and JSON untouched', () => {
+    const rows = [['=HYPERLINK("http://x")', '+1', '-y', '@SUM(A1)', -5, 'plain', ['=a', 'b']]]
+    const header = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+    assert.deepEqual(x.toTsv(header, rows).split('\n')[1].split('\t'), ["'=HYPERLINK(\"http://x\")", "'+1", "'-y", "'@SUM(A1)", '-5', 'plain', "'=a; b"])
+    assert.equal(x.toCsv(header, rows).split('\r\n')[1], `"'=HYPERLINK(""http://x"")",'+1,'-y,'@SUM(A1),-5,plain,'=a; b`)
+    assert.equal(JSON.parse(x.toJson(header, rows, ['u']))[0].A, '=HYPERLINK("http://x")')
+  })
   test('JSON keeps types and arrays, puts the uuid first, and numbers repeated titles', () => {
     const rows = JSON.parse(x.toJson(['Name', 'Rating', 'Name'], [['Kindred', null, 'dup']], ['u1']))
     assert.deepEqual(rows, [{ uuid: 'u1', Name: 'Kindred', Rating: null, 'Name 2': 'dup' }])

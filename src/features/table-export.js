@@ -17,15 +17,21 @@
 
   const text = (v) => (v == null ? '' : Array.isArray(v) ? v.map(text).join('; ') : String(v))
 
-  /** RFC 4180 CSV with a UTF-8 BOM (so Excel reads accents) and CRLF line ends. */
+  /**
+   * Text a spreadsheet would run as a formula (=, +, -, @, tab, CR first) gets a leading ' so it stays text: a block
+   * titled =HYPERLINK(...) must not become a live formula in Excel or Sheets. Numbers are left as they are.
+   */
+  const cell = (c, s = text(c)) => (typeof c !== 'number' && /^[=+\-@\t\r]/.test(s) ? `'${s}` : s)
+
+  /** RFC 4180 CSV with a UTF-8 BOM (so Excel reads accents) and CRLF line ends; formula-like text kept as text. */
   function toCsv(header, rows) {
     const quote = (s) => (/[",\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s)
-    return '﻿' + [header, ...rows].map((r) => r.map((c) => quote(text(c))).join(',')).join('\r\n') + '\r\n'
+    return '﻿' + [header, ...rows].map((r) => r.map((c) => quote(cell(c))).join(',')).join('\r\n') + '\r\n'
   }
 
-  /** Tab-separated text that pastes into Excel or Sheets as cells. */
+  /** Tab-separated text that pastes into Excel or Sheets as cells; formula-like text kept as text. */
   function toTsv(header, rows) {
-    const clean = (c) => text(c).replace(/[\t\r\n]+/g, ' ')
+    const clean = (c) => cell(c, text(c).replace(/[\t\r\n]+/g, ' '))
     return [header, ...rows].map((r) => r.map(clean).join('\t')).join('\n')
   }
 
