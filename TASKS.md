@@ -25,7 +25,7 @@ Shipped locally this session: C08–C11 (table export for tag and query tables; 
 
 Resume with:
 1. Owner checks passed 2026-10-18: Download CSV opens the Save sheet and the file matches the table; in Tweaks, Export tables off/on removes/restores the button and CSV off removes it from the menu.
-2. Next: the C02 leftover (tweet switch off/on live), and C03 icon → C04 push (go-ahead needed) → C05 marketplace PR → C07.
+2. Done since: C02 (tweet switch off/on, owner) and C03 (icon). Next: C04 push (go-ahead needed) → C05 marketplace PR → C07.
 3. Next features: export for All pages / references tables, relative date filters, non-English column titles, XLSX (C10 "Not yet"); each new feature needs a `category` (see `docs/ADDING-A-FEATURE.md`).
 
 After changing plugin code, Logseq must be restarted (⌘Q): reloading the plugin serves the old script, in the owner's app as in the test instance.
@@ -37,8 +37,8 @@ After changing plugin code, Logseq must be restarted (⌘Q): reloading the plugi
 
 ## Next, in order
 
-- [~] C02 Live check of the loader and settings page. Partly done 2026-10-18 (C10/C11 runs and the owner's app): the plugin loads, the settings page lists every switch, Export tables starts. Left: the tweet switch off/on live. Original note: NOT verified live yet (only the tweet logic is, and only via the theme's earlier copy of it). Load the folder as an unpacked plugin, then check: plugin loads with no `handshake Timeout`; the settings page lists "Fit embedded tweets to their content", on by default; with it on a tweet resizes to its content; switching it off stops resizing without a reload (listener removed; inline height from before the switch stays until the tweet reloads, so decide whether `stop` should also clear it); on again resumes. Then tick the box in this file
-- [ ] C03 Own icon (`assets/icon.png`, currently a copy of the theme's). Keep it distinct from the theme's but recognisably related
+- [x] C02 (2026-10-18) Live check of the loader and settings page: plugin loads, settings page lists every switch (C10/C11 runs); the owner confirmed the tweet switch off/on works live and Export tables off/on
+- [x] C03 (2026-10-18) Own icon: `assets/icon.svg` (source) rendered to `assets/icon.png` 256px with `rsvg-convert -w 256 -h 256`. The theme's tile and palette (#223b3b, #b3c6c6, #f5f5f7, ink red #9c2529), two switches instead of ink lines: one on with the red dot as its knob, one off. Reads at 64px
 - [ ] C04 Create `hdansou/logseq-inkwell-companion` on GitHub, push `main`, check CI is green, then tag `v0.1.0` (the Publish workflow checks the tag matches `package.json`, runs the tests and attaches the zip). Needs the owner's go-ahead for each push
 - [ ] C05 Marketplace PR (`marketplace/manifest.json` + `assets/icon.png`; see how the theme's PR #922 was done). The manifest has no `theme: true`. Check whether a plugin that runs code needs anything the theme did not (the `effect` flag is for app-level UI/code injection, left off on purpose). **C08 found this matters:** a marketplace plugin without `effect: true` loads from `lsp://logseq.io/plugins/`, cross-origin to the app, so `host.document` throws. `tweet-height` (reads `host.document`, listens on `host`) and the planned Export button (injected into the view header) both need `effect: true` in `marketplace/manifest.json`, or a rewrite onto `provideUI`/`provideModel`. Decided 2026-10-18: `effect: true` is in the manifest (C10); the dev install hides the problem (same origin)
 - [ ] C07 Then: link the companion from the theme's README once it is published (the link already exists there and 404s until C04), and note the companion in the theme repo if the marketplace listing wants it
