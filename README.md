@@ -2,11 +2,11 @@
 
 Small UX fixes for Logseq DB graphs that CSS alone can't make. It works with any theme; it is made to sit next to the [Inkwell theme](https://github.com/hdansou/logseq-inkwell-theme), which stays a stylesheet with no code.
 
-Each fix is a separate feature with its own switch under Settings › Plugins › Inkwell Companion. All are on by default.
+Each fix is a separate feature with its own switch. All are on by default. Turn them on and off in **Tweaks**, a dialog with a card per feature that you can search and filter by category: open it from the command palette ("Inkwell Companion: Tweaks") or with the Open Tweaks button under Settings › Plugins › Inkwell Companion. The same switches are on that settings page too.
 
 | Feature | What it fixes |
 |---|---|
-| **Export tables** | Core can only copy a table view as EDN. This adds an Export button to tag and query tables: download CSV or JSON, or copy the rows for a spreadsheet. It exports every row, not just the ones on screen, with the view's columns, filters, search and sort. If its row count differs from the table's, it stops and says so rather than save something different. |
+| **Export tables** | Core can only copy a table view as EDN. This adds an Export button to tag and query tables: download CSV or JSON, or copy the rows for a spreadsheet (each format can be switched off). It exports every row, not just the ones on screen, with the view's columns, filters, search and sort. If its row count differs from the table's, it stops and says so rather than save something different. |
 | **Fit embedded tweets** | Core shows `{{twitter …}}` embeds in a 240px box you scroll inside. This sizes each embed to its tweet (the embed reports its own height). |
 
 ## Install

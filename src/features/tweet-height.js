@@ -17,6 +17,7 @@
     id: 'tweetHeight',
     title: 'Fit embedded tweets to their content',
     description: 'Core shows {{twitter …}} embeds in a short box you scroll inside. This sizes each one to its tweet.',
+    category: 'Embeds',
     parseResize,
     start(host) {
       const onMessage = (e) => {

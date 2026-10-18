@@ -319,16 +319,19 @@
     return { uuid, kind, title, count: parseCount(countText), titles, search: input ? input.value.trim() : '' }
   }
 
+  // `key` is the format's settings switch (an option of the feature in the Tweaks dialog)
   const FORMATS = [
-    { id: 'csv', label: 'Download CSV', ext: 'csv', type: 'text/csv;charset=utf-8', build: (d) => toCsv(d.header, d.rows) },
-    { id: 'json', label: 'Download JSON', ext: 'json', type: 'application/json', build: (d) => toJson(d.header, d.rows, d.uuids) },
-    { id: 'tsv', label: 'Copy for spreadsheet', build: (d) => toTsv(d.header, d.rows) },
+    { key: 'tableExportCsv', option: 'CSV', label: 'Download CSV', ext: 'csv', type: 'text/csv;charset=utf-8', build: (d) => toCsv(d.header, d.rows) },
+    { key: 'tableExportJson', option: 'JSON', label: 'Download JSON', ext: 'json', type: 'application/json', build: (d) => toJson(d.header, d.rows, d.uuids) },
+    { key: 'tableExportTsv', option: 'Copy for spreadsheet', label: 'Copy for spreadsheet', build: (d) => toTsv(d.header, d.rows) },
   ]
 
   const feature = {
     id: 'tableExport',
     title: 'Export tables',
     description: 'Adds an Export button to tag and query tables: download CSV or JSON, or copy the rows for a spreadsheet.',
+    category: 'Tables',
+    options: FORMATS.map((f) => ({ key: f.key, label: f.option })),
     toCsv, toTsv, toJson, fileName, parseCount, refContent, resolve, matchesFilter, rowMatches, sortRows, mapColumns, collect, readView, Unsupported,
     start(host, sdk) {
       const doc = host.document
@@ -390,7 +393,14 @@
           border: '1px solid var(--ls-border-color, rgba(0,0,0,.12))', boxShadow: '0 8px 24px rgba(0,0,0,.18)',
           display: 'flex', flexDirection: 'column',
         })
-        for (const format of FORMATS) {
+        const formats = FORMATS.filter((f) => !sdk.settings || sdk.settings[f.key] !== false)
+        if (!formats.length) {
+          const note = doc.createElement('div')
+          note.textContent = 'Every format is off. Turn one on in Inkwell Companion › Tweaks.'
+          Object.assign(note.style, { padding: '8px 10px', fontSize: '13px', opacity: '.75' })
+          menu.appendChild(note)
+        }
+        for (const format of formats) {
           const item = doc.createElement('button')
           item.type = 'button'
           item.setAttribute('role', 'menuitem')
@@ -405,7 +415,7 @@
           menu.appendChild(item)
         }
         doc.body.appendChild(menu)
-        menu.querySelector('button').focus()
+        if (formats.length) menu.querySelector('button').focus()
       }
 
       // view uuid -> exportable? (tag tables and query tables are; All pages, references are not yet)

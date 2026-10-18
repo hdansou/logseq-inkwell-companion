@@ -9,6 +9,8 @@ Only add something here that CSS can't do. If the theme can fix it with a rule, 
        id: 'camelCaseKey',        // the settings key; the switch defaults to on
        title: 'Short sentence for the settings page',
        description: 'What it fixes and why core does not.',
+       category: 'Tables',        // groups it in the Tweaks dialog and on the settings page
+       options: [{ key: 'camelCaseKeyCsv', label: 'CSV' }], // optional: more switches (settings keys, on by default), read from sdk.settings
        start(host, sdk) { /* host is Logseq's window, sdk the `logseq` API; return a function that undoes everything */ return () => {} },
      }
      if (typeof module !== 'undefined' && module.exports) module.exports = feature
