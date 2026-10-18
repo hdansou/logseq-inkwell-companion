@@ -4,11 +4,11 @@ Status: `[ ]` todo · `[~]` in progress · `[x]` done. Newest decisions at the b
 
 ## Context (read first)
 
-Inkwell Companion is a Logseq DB plugin that sits next to the Inkwell theme (`../logseq-inkwell-theme`, public, v1.1.0 released). The theme is a stylesheet and stays code-free; anything CSS can't do goes here (`docs/ADDING-A-FEATURE.md`). Nothing here is on GitHub yet; the repo exists only locally (3 commits on `main`).
+Inkwell Companion is a Logseq DB plugin that sits next to the Inkwell theme (`../logseq-inkwell-theme`, public, v1.1.0 released). The theme is a stylesheet and stays code-free; anything CSS can't do goes here (`docs/ADDING-A-FEATURE.md`). Nothing here is on GitHub yet; the repo exists only locally (`main`, not pushed).
 
 Decisions (owner):
 - **Name** Inkwell Companion, repo `hdansou/logseq-inkwell-companion`; works with any theme, not tied to Inkwell's CSS.
-- **Toggle** one boolean setting per feature on the plugin's settings page, all on by default. No command palette or toolbar toggle.
+- **Toggle** one boolean setting per feature (plus optional per-feature options), all on by default, stored in the plugin's settings. Edited in the Tweaks dialog (mockup A, card grid; C11) or on the settings page. The dialog opens from the command palette and an Open Tweaks button on the settings page; no toolbar icon.
 - **Tweets** the theme makes no tweet change (a fixed CSS height leaves short tweets with blank space); the companion fits each tweet exactly. Without the plugin (custom.css, iOS) tweets keep core's 240px scroll box.
 - **Publishing** never push, tag, or open a marketplace PR without the owner's say-so.
 
@@ -19,6 +19,17 @@ Known gotchas:
 - Features are classic scripts (no modules, no build), loaded by `index.html` before `src/main.js`; a test enforces both.
 - Live testing in the desktop app shares `~/.logseq` with the owner's app. Use the `test-logseq-desktop` skill's rules: second instance with its own profile and a CDP port, throwaway graph, never register/unregister plugins from a script or change plugin settings. Loading this folder as an unpacked plugin (Developer mode) is an owner action, or ask first.
 
+## Where we stopped (2026-10-18)
+
+Shipped locally this session: C08–C11 (table export for tag and query tables; the Tweaks dialog; `effect: true` in the manifest). 39 tests pass. The owner runs it as an unpacked plugin and saw the Export button after a full restart.
+
+Resume with:
+1. **Owner checks still open** (ask for the results first): (a) Export › Download CSV opens the Save sheet and the file matches the table (C10; if no sheet, switch `save` to `showSaveFilePicker`, keep Copy for spreadsheet); (b) in Tweaks, Export tables off/on removes/restores the button, CSV off removes it from the menu (C11).
+2. Then the C02 leftover (tweet switch off/on live), and C03 icon → C04 push (go-ahead needed) → C05 marketplace PR → C07.
+3. Next features: export for All pages / references tables, relative date filters, non-English column titles, XLSX (C10 "Not yet"); each new feature needs a `category` (see `docs/ADDING-A-FEATURE.md`).
+
+After changing plugin code, Logseq must be restarted (⌘Q): reloading the plugin serves the old script, in the owner's app as in the test instance.
+
 ## Done
 
 - [x] C01 (2026-10-05) Scaffold: manifest, loader (`src/main.js`), first feature `tweet-height`, 10 tests, CI, publish workflow, release zip script. Copied from the theme repo: LICENSE, .gitignore, CI/publish workflows, **icon (placeholder)**
@@ -26,7 +37,7 @@ Known gotchas:
 
 ## Next, in order
 
-- [ ] C02 Live check of the loader and settings page, which are NOT verified live yet (only the tweet logic is, and only via the theme's earlier copy of it). Load the folder as an unpacked plugin, then check: plugin loads with no `handshake Timeout`; the settings page lists "Fit embedded tweets to their content", on by default; with it on a tweet resizes to its content; switching it off stops resizing without a reload (listener removed; inline height from before the switch stays until the tweet reloads, so decide whether `stop` should also clear it); on again resumes. Then tick the box in this file
+- [~] C02 Live check of the loader and settings page. Partly done 2026-10-18 (C10/C11 runs and the owner's app): the plugin loads, the settings page lists every switch, Export tables starts. Left: the tweet switch off/on live. Original note: NOT verified live yet (only the tweet logic is, and only via the theme's earlier copy of it). Load the folder as an unpacked plugin, then check: plugin loads with no `handshake Timeout`; the settings page lists "Fit embedded tweets to their content", on by default; with it on a tweet resizes to its content; switching it off stops resizing without a reload (listener removed; inline height from before the switch stays until the tweet reloads, so decide whether `stop` should also clear it); on again resumes. Then tick the box in this file
 - [ ] C03 Own icon (`assets/icon.png`, currently a copy of the theme's). Keep it distinct from the theme's but recognisably related
 - [ ] C04 Create `hdansou/logseq-inkwell-companion` on GitHub, push `main`, check CI is green, then tag `v0.1.0` (the Publish workflow checks the tag matches `package.json`, runs the tests and attaches the zip). Needs the owner's go-ahead for each push
 - [ ] C05 Marketplace PR (`marketplace/manifest.json` + `assets/icon.png`; see how the theme's PR #922 was done). The manifest has no `theme: true`. Check whether a plugin that runs code needs anything the theme did not (the `effect` flag is for app-level UI/code injection, left off on purpose). **C08 found this matters:** a marketplace plugin without `effect: true` loads from `lsp://logseq.io/plugins/`, cross-origin to the app, so `host.document` throws. `tweet-height` (reads `host.document`, listens on `host`) and the planned Export button (injected into the view header) both need `effect: true` in `marketplace/manifest.json`, or a rewrite onto `provideUI`/`provideModel`. Decided 2026-10-18: `effect: true` is in the manifest (C10); the dev install hides the problem (same origin)
