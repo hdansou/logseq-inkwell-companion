@@ -1,5 +1,5 @@
 // Loader: one settings toggle per feature (all on by default); start the enabled ones, stop them on unload.
-// A feature is { id, title, description, start(host) -> stop() } from src/features/*.js.
+// A feature is { id, title, description, start(host, sdk) -> stop() } from src/features/*.js; sdk is the `logseq` API.
 const features = (window.InkwellCompanion && window.InkwellCompanion.features) || []
 const host = window.parent
 const running = new Map()
@@ -7,7 +7,7 @@ const running = new Map()
 const sync = () => {
   for (const f of features) {
     const on = logseq.settings[f.id] !== false
-    if (on && !running.has(f.id)) running.set(f.id, f.start(host))
+    if (on && !running.has(f.id)) running.set(f.id, f.start(host, logseq))
     if (!on && running.has(f.id)) { running.get(f.id)(); running.delete(f.id) }
   }
 }

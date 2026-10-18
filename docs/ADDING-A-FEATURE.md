@@ -9,7 +9,7 @@ Only add something here that CSS can't do. If the theme can fix it with a rule, 
        id: 'camelCaseKey',        // the settings key; the switch defaults to on
        title: 'Short sentence for the settings page',
        description: 'What it fixes and why core does not.',
-       start(host) { /* host is Logseq's window; return a function that undoes everything */ return () => {} },
+       start(host, sdk) { /* host is Logseq's window, sdk the `logseq` API; return a function that undoes everything */ return () => {} },
      }
      if (typeof module !== 'undefined' && module.exports) module.exports = feature
      else (root.InkwellCompanion = root.InkwellCompanion || { features: [] }).features.push(feature)

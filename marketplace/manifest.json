@@ -6,5 +6,6 @@
   "icon": "icon.png",
   "web": true,
   "supportsDB": true,
-  "supportsDBOnly": true
+  "supportsDBOnly": true,
+  "effect": true
 }

@@ -6,11 +6,14 @@ Each fix is a separate feature with its own switch under Settings › Plugins �
 
 | Feature | What it fixes |
 |---|---|
+| **Export tables** | Core can only copy a table view as EDN. This adds an Export button to tag and query tables: download CSV or JSON, or copy the rows for a spreadsheet. It exports every row, not just the ones on screen, with the view's columns, filters, search and sort. If its row count differs from the table's, it stops and says so rather than save something different. |
 | **Fit embedded tweets** | Core shows `{{twitter …}}` embeds in a 240px box you scroll inside. This sizes each embed to its tweet (the embed reports its own height). |
 
 ## Install
 
 Once published: Marketplace › Plugins › _Inkwell Companion_. To load a local checkout: Developer mode, then Plugins › Load unpacked plugin › choose this folder.
+
+It asks for `effect` in the marketplace manifest: the features read and change Logseq's page (an Export button in table headers, tweet heights), which a plugin without it cannot reach.
 
 The plugin needs the network: it loads Logseq's plugin library (`@logseq/libs`, pinned, with an integrity hash) from the jsDelivr CDN, and the features it ships act on web content.
 

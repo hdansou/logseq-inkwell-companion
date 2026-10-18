@@ -18,6 +18,9 @@ describe('plugin package', () => {
     assert.equal(`https://github.com/${manifest.repo}`, pkg.repository.url.replace(/^git\+/, '').replace(/\.git$/, ''))
     assert.notEqual(manifest.theme, true)
   })
+  test('the manifest asks for effect: features read and change Logseq\'s page, which a plugin without it cannot reach', () => {
+    assert.equal(manifest.effect, true)
+  })
   test('index.html pins its library with integrity and loads every feature before the loader', () => {
     const html = read('index.html')
     assert.match(html, /<script src="https:\/\/cdn\.jsdelivr\.net\/npm\/@logseq\/libs@\d+\.\d+\.\d+\/dist\/lsplugin\.user\.js" integrity="sha384-[A-Za-z0-9+/=]+"/)
