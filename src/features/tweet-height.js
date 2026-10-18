@@ -20,16 +20,21 @@
     category: 'Embeds',
     parseResize,
     start(host) {
+      const sized = new Set() // iframes this feature set a height on, cleared again by stop
       const onMessage = (e) => {
         if (e.origin !== ORIGIN) return
         const height = parseResize(e.data)
         if (height === null) return
         for (const frame of host.document.querySelectorAll('iframe.tweet-embed')) {
-          if (frame.contentWindow === e.source) frame.style.height = `${height}px`
+          if (frame.contentWindow === e.source) { frame.style.height = `${height}px`; sized.add(frame) }
         }
       }
       host.addEventListener('message', onMessage)
-      return () => host.removeEventListener('message', onMessage)
+      return () => {
+        host.removeEventListener('message', onMessage)
+        for (const frame of sized) frame.style.height = ''
+        sized.clear()
+      }
     },
   }
 

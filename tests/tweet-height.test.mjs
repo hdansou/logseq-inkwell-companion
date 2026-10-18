@@ -55,4 +55,11 @@ describe('tweet-height start/stop', () => {
     stop()
     assert.equal(host.listeners.size, 0)
   })
+  test('stop gives the tweets it sized back their own height', () => {
+    const mine = frame(), host = makeHost(mine)
+    const stop = feature.start(host)
+    send(host, resize(700), { source: mine.contentWindow })
+    stop()
+    assert.equal(mine.style.height, '')
+  })
 })
