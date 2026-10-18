@@ -4,7 +4,7 @@ Status: `[ ]` todo · `[~]` in progress · `[x]` done. Newest decisions at the b
 
 ## Context (read first)
 
-Inkwell Companion is a Logseq DB plugin that sits next to the Inkwell theme (`../logseq-inkwell-theme`, public, v1.1.0 released). The theme is a stylesheet and stays code-free; anything CSS can't do goes here (`docs/ADDING-A-FEATURE.md`). Nothing here is on GitHub yet; the repo exists only locally (`main`, not pushed).
+Inkwell Companion is a Logseq DB plugin that sits next to the Inkwell theme (`../logseq-inkwell-theme`, public, v1.1.0 released). The theme is a stylesheet and stays code-free; anything CSS can't do goes here (`docs/ADDING-A-FEATURE.md`). Public on GitHub since 2026-10-18 (`hdansou/logseq-inkwell-companion`, v0.1.0 released).
 
 Decisions (owner):
 - **Name** Inkwell Companion, repo `hdansou/logseq-inkwell-companion`; works with any theme, not tied to Inkwell's CSS.
@@ -25,7 +25,7 @@ Shipped locally this session: C08–C11 (table export for tag and query tables; 
 
 Resume with:
 1. Owner checks passed 2026-10-18: Download CSV opens the Save sheet and the file matches the table; in Tweaks, Export tables off/on removes/restores the button and CSV off removes it from the menu.
-2. Done since: C02 (tweet switch off/on, owner) and C03 (icon). Next: C04 push (go-ahead needed) → C05 marketplace PR → C07.
+2. Done since: C02 (tweet switch off/on, owner) and C03 (icon). Then C04 (pushed, v0.1.0 released). Next: C05 marketplace PR (go-ahead needed) → C07.
 3. Next features: export for All pages / references tables, relative date filters, non-English column titles, XLSX (C10 "Not yet"); each new feature needs a `category` (see `docs/ADDING-A-FEATURE.md`).
 
 After changing plugin code, Logseq must be restarted (⌘Q): reloading the plugin serves the old script, in the owner's app as in the test instance.
@@ -39,7 +39,7 @@ After changing plugin code, Logseq must be restarted (⌘Q): reloading the plugi
 
 - [x] C02 (2026-10-18) Live check of the loader and settings page: plugin loads, settings page lists every switch (C10/C11 runs); the owner confirmed the tweet switch off/on works live and Export tables off/on
 - [x] C03 (2026-10-18) Own icon: `assets/icon.svg` (source) rendered to `assets/icon.png` 256px with `rsvg-convert -w 256 -h 256`. The theme's tile and palette (#223b3b, #b3c6c6, #f5f5f7, ink red #9c2529), two switches instead of ink lines: one on with the red dot as its knob, one off. Reads at 64px
-- [ ] C04 Create `hdansou/logseq-inkwell-companion` on GitHub, push `main`, check CI is green, then tag `v0.1.0` (the Publish workflow checks the tag matches `package.json`, runs the tests and attaches the zip). Needs the owner's go-ahead for each push
+- [x] C04 (2026-10-18) Public repo https://github.com/hdansou/logseq-inkwell-companion created and `main` pushed (owner's go); CI green; tag `v0.1.0` → Publish green, release https://github.com/hdansou/logseq-inkwell-companion/releases/tag/v0.1.0 with `logseq-inkwell-companion-0.1.0.zip`
 - [ ] C05 Marketplace PR (`marketplace/manifest.json` + `assets/icon.png`; see how the theme's PR #922 was done). The manifest has no `theme: true`. Check whether a plugin that runs code needs anything the theme did not (the `effect` flag is for app-level UI/code injection, left off on purpose). **C08 found this matters:** a marketplace plugin without `effect: true` loads from `lsp://logseq.io/plugins/`, cross-origin to the app, so `host.document` throws. `tweet-height` (reads `host.document`, listens on `host`) and the planned Export button (injected into the view header) both need `effect: true` in `marketplace/manifest.json`, or a rewrite onto `provideUI`/`provideModel`. Decided 2026-10-18: `effect: true` is in the manifest (C10); the dev install hides the problem (same origin)
 - [ ] C07 Then: link the companion from the theme's README once it is published (the link already exists there and 404s until C04), and note the companion in the theme repo if the marketplace listing wants it
 
