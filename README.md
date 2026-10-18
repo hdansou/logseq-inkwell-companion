@@ -17,9 +17,13 @@ It asks for `effect` in the marketplace manifest: the features read and change L
 
 The plugin needs the network: it loads Logseq's plugin library (`@logseq/libs`, pinned, with an integrity hash) from the jsDelivr CDN, and the features it ships act on web content.
 
+## Privacy
+
+The plugin sends nothing anywhere and keeps no data of its own beyond its switches (in Logseq's plugin settings). Exports go to a file you save or to your clipboard. Its only network use is loading `@logseq/libs` from jsDelivr.
+
 ## Compatibility
 
-Logseq DB graphs (2.0.x), desktop and web. Not on iOS, which does not load plugins; the Inkwell theme's CSS fallbacks apply there.
+Logseq DB graphs (2.0.x), desktop; checked on 2.0.2. The web app is not tested yet. Not on iOS, which does not load plugins; the Inkwell theme's CSS fallbacks apply there.
 
 ## Develop
 

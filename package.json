@@ -1,7 +1,7 @@
 {
   "name": "logseq-inkwell-companion",
   "version": "0.1.0",
-  "description": "Small UX fixes for Logseq DB graphs that CSS alone can't make. Works with any theme; made to sit next to the Inkwell theme.",
+  "description": "Fixes for Logseq DB graphs that CSS alone can't make: export tag and query tables to CSV or JSON, fit embedded tweets. Each fix has its own switch. Works with any theme.",
   "author": "Danzu",
   "license": "MIT",
   "repository": {
