@@ -11,15 +11,13 @@ Each fix is a separate feature with its own switch. All are on by default. Turn 
 
 ## Install
 
-Once published: Marketplace › Plugins › _Inkwell Companion_. To load a local checkout: Developer mode, then Plugins › Load unpacked plugin › choose this folder.
+Marketplace › Plugins › _Inkwell Companion_ (once listed), or download the zip from [Releases](https://github.com/hdansou/logseq-inkwell-companion/releases), unzip it, and in Developer mode use Plugins › Load unpacked plugin. To load a checkout instead: `npm install && npm run build`, then load this folder (Logseq runs `dist/index.html`); restart Logseq after each build, since reloading the plugin keeps the old code.
 
 It asks for `effect` in the marketplace manifest: the features read and change Logseq's page (an Export button in table headers, tweet heights), which a plugin without it cannot reach.
 
-The plugin needs the network: it loads Logseq's plugin library (`@logseq/libs`, pinned, with an integrity hash) from the jsDelivr CDN, and the features it ships act on web content.
-
 ## Privacy
 
-The plugin sends nothing anywhere and keeps no data of its own beyond its switches (in Logseq's plugin settings). Exports go to a file you save or to your clipboard. Its only network use is loading `@logseq/libs` from jsDelivr.
+The plugin sends nothing anywhere and keeps no data of its own beyond its switches (in Logseq's plugin settings). Exports go to a file you save or to your clipboard. It makes no network requests: Logseq's plugin library is bundled in.
 
 ## Compatibility
 
@@ -27,6 +25,14 @@ Logseq DB graphs (2.0.x), desktop; checked on 2.0.2. The web app is not tested y
 
 ## Develop
 
-`npm test` (no dependencies, Node 20+). `npm run package` builds `dist/logseq-inkwell-companion-<version>.zip`. [docs/ADDING-A-FEATURE.md](docs/ADDING-A-FEATURE.md) covers adding one.
+TypeScript, built with Vite; tests with Vitest (happy-dom for the DOM parts); lint and format with Biome. Node 22+.
+
+```sh
+npm install
+npm run check   # typecheck, lint, test, build
+npm run dev     # Vite dev server on 8295
+```
+
+Pushing a tag `v<version>` builds the release zip on GitHub. [docs/ADDING-A-FEATURE.md](docs/ADDING-A-FEATURE.md) covers adding a feature.
 
 MIT licensed.

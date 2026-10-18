@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">
+  <title>Inkwell Companion</title>
   <rect width="256" height="256" rx="56" fill="#223b3b"/>
   <rect x="48" y="62" width="160" height="56" rx="28" fill="#b3c6c6"/>
   <circle cx="180" cy="90" r="20" fill="#9c2529"/>

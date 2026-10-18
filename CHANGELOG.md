@@ -4,6 +4,10 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follo
 
 ## [Unreleased]
 
+### Changed
+
+- Rewritten in TypeScript (Vite build, Vitest, Biome), following the owner's plugin standards; behaviour unchanged. Logseq now loads `dist/index.html`, and `@logseq/libs` is bundled instead of fetched from jsDelivr, so the plugin makes no network requests.
+
 ## [0.1.0] - 2026-10-18
 
 ### Added

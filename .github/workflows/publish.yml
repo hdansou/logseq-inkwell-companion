@@ -20,13 +20,22 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22
+          cache: npm
       - name: Tag matches package.json version
         run: |
           VERSION=$(node -p 'require("./package.json").version')
           test "${GITHUB_REF_NAME}" = "v${VERSION}" || { echo "tag ${GITHUB_REF_NAME} != v${VERSION}"; exit 1; }
-      - name: Build zip (runs the tests first)
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+      - name: Build zip (files at the zip root)
         id: pack
-        run: echo "zip=$(sh tools/package.sh)" >> "$GITHUB_OUTPUT"
+        run: |
+          ZIP="logseq-inkwell-companion-${GITHUB_REF_NAME#v}.zip"
+          zip -q -r "$ZIP" package.json dist icon.svg icon.png README.md LICENSE CHANGELOG.md
+          echo "zip=$ZIP" >> "$GITHUB_OUTPUT"
       - uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
         with:
           files: ${{ steps.pack.outputs.zip }}

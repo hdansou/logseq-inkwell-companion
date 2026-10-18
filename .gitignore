@@ -1,8 +1,10 @@
 # dependencies and build output
 node_modules/
 dist/
+coverage/
 *.zip
-
+*.tsbuildinfo
+*.log
 
 # scratch, env, local overrides
 tmp/

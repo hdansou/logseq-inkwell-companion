@@ -12,23 +12,22 @@ Decisions (owner):
 - **Tweets** the theme makes no tweet change (a fixed CSS height leaves short tweets with blank space); the companion fits each tweet exactly. Without the plugin (custom.css, iOS) tweets keep core's 240px scroll box.
 - **Publishing** never push, tag, or open a marketplace PR without the owner's say-so.
 
-How the first feature works: core renders `{{twitter <url>}}` as `iframe.tweet-embed` (min-height 240px, never resized). The embed posts `{"twttr.embed": {method: "twttr.private.resize", params: [{height}]}}` to the parent window; `src/features/tweet-height.js` applies it as an inline height on the iframe that sent it (origin `https://platform.twitter.com` only). Proven live in the theme repo on desktop 2.0.1: the test tweet (`https://x.com/richardcsuwandi/status/2106617018225147907`) went from a 240px box to 833px.
+How the first feature works: core renders `{{twitter <url>}}` as `iframe.tweet-embed` (min-height 240px, never resized). The embed posts `{"twttr.embed": {method: "twttr.private.resize", params: [{height}]}}` to the parent window; `src/features/tweet-height.ts` applies it as an inline height on the iframe that sent it (origin `https://platform.twitter.com` only). Proven live in the theme repo on desktop 2.0.1: the test tweet (`https://x.com/richardcsuwandi/status/2106617018225147907`) went from a 240px box to 833px.
 
 Known gotchas:
-- Logseq needs `@logseq/libs` for the plugin handshake; without it the plugin fails with `handshake Timeout`. `index.html` loads `@logseq/libs@0.3.4` from jsDelivr with an SRI hash (changing the version means recomputing it: `curl -s <url> | openssl dgst -sha384 -binary | openssl base64 -A`).
-- Features are classic scripts (no modules, no build), loaded by `index.html` before `src/main.js`; a test enforces both.
+- TypeScript since 2026-10-18 (C12): Vite bundles `@logseq/libs` (no CDN), Logseq loads `dist/index.html`, so build before loading the folder. `npm run check` = typecheck, Biome, Vitest, build.
 - Live testing in the desktop app shares `~/.logseq` with the owner's app. Use the `test-logseq-desktop` skill's rules: second instance with its own profile and a CDP port, throwaway graph, never register/unregister plugins from a script or change plugin settings. Loading this folder as an unpacked plugin (Developer mode) is an owner action, or ask first.
 
 ## Where we stopped (2026-10-18)
 
-Shipped locally this session: C08–C11 (table export for tag and query tables; the Tweaks dialog; `effect: true` in the manifest). 39 tests pass. The owner runs it as an unpacked plugin and saw the Export button after a full restart.
+Shipped this session: C08–C11 (table export for tag and query tables; the Tweaks dialog; `effect: true` in the manifest), v0.1.0 released, then C12 (TypeScript port, 61 tests). The owner runs it as an unpacked plugin and saw the Export button after a full restart.
 
 Resume with:
 1. Owner checks passed 2026-10-18: Download CSV opens the Save sheet and the file matches the table; in Tweaks, Export tables off/on removes/restores the button and CSV off removes it from the menu.
 2. Done since: C02 (tweet switch off/on, owner) and C03 (icon). Then C04 (pushed, v0.1.0 released). Next: C05 marketplace PR (go-ahead needed) → C07.
 3. Next features: export for All pages / references tables, relative date filters, non-English column titles, XLSX (C10 "Not yet"); each new feature needs a `category` (see `docs/ADDING-A-FEATURE.md`).
 
-After changing plugin code, Logseq must be restarted (⌘Q): reloading the plugin serves the old script, in the owner's app as in the test instance.
+After changing plugin code, `npm run build`, then Logseq must be restarted (⌘Q): reloading the plugin serves the old script, in the owner's app as in the test instance.
 
 ## Done
 
@@ -38,9 +37,9 @@ After changing plugin code, Logseq must be restarted (⌘Q): reloading the plugi
 ## Next, in order
 
 - [x] C02 (2026-10-18) Live check of the loader and settings page: plugin loads, settings page lists every switch (C10/C11 runs); the owner confirmed the tweet switch off/on works live and Export tables off/on
-- [x] C03 (2026-10-18) Own icon: `assets/icon.svg` (source) rendered to `assets/icon.png` 256px with `rsvg-convert -w 256 -h 256`. The theme's tile and palette (#223b3b, #b3c6c6, #f5f5f7, ink red #9c2529), two switches instead of ink lines: one on with the red dot as its knob, one off. Reads at 64px
+- [x] C03 (2026-10-18) Own icon: `icon.svg` (source, repo root since C12) rendered to `icon.png` 256px with `rsvg-convert -w 256 -h 256`. The theme's tile and palette (#223b3b, #b3c6c6, #f5f5f7, ink red #9c2529), two switches instead of ink lines: one on with the red dot as its knob, one off. Reads at 64px
 - [x] C04 (2026-10-18) Public repo https://github.com/hdansou/logseq-inkwell-companion created and `main` pushed (owner's go); CI green; tag `v0.1.0` → Publish green, release https://github.com/hdansou/logseq-inkwell-companion/releases/tag/v0.1.0 with `logseq-inkwell-companion-0.1.0.zip`
-- [ ] C05 Marketplace PR (`marketplace/manifest.json` + `assets/icon.png`; see how the theme's PR #922 was done). The manifest has no `theme: true`. Check whether a plugin that runs code needs anything the theme did not (the `effect` flag is for app-level UI/code injection, left off on purpose). **C08 found this matters:** a marketplace plugin without `effect: true` loads from `lsp://logseq.io/plugins/`, cross-origin to the app, so `host.document` throws. `tweet-height` (reads `host.document`, listens on `host`) and the planned Export button (injected into the view header) both need `effect: true` in `marketplace/manifest.json`, or a rewrite onto `provideUI`/`provideModel`. Decided 2026-10-18: `effect: true` is in the manifest (C10); the dev install hides the problem (same origin)
+- [ ] C05 Marketplace PR (`marketplace/manifest.json` + `icon.png`; see how the theme's PR #922 was done). The manifest has no `theme: true`. Check whether a plugin that runs code needs anything the theme did not (the `effect` flag is for app-level UI/code injection, left off on purpose). **C08 found this matters:** a marketplace plugin without `effect: true` loads from `lsp://logseq.io/plugins/`, cross-origin to the app, so `host.document` throws. `tweet-height` (reads `host.document`, listens on `host`) and the planned Export button (injected into the view header) both need `effect: true` in `marketplace/manifest.json`, or a rewrite onto `provideUI`/`provideModel`. Decided 2026-10-18: `effect: true` is in the manifest (C10); the dev install hides the problem (same origin)
 - [ ] C07 Then: link the companion from the theme's README once it is published (the link already exists there and 404s until C04), and note the companion in the theme repo if the marketplace listing wants it
 
 ## Table export and the Tweaks dialog (planned 2026-10-17)
@@ -73,3 +72,10 @@ Facts from the Logseq source (DB version, 2026-10-17):
 
 Applied: export guards formula-like text in CSV / TSV (leading `'`; JSON untouched; tests); tweet-height `stop` clears the heights it set (test); the loader uses `tweaks.isOn`; dead theme-lab lines out of `.gitignore`; descriptions in `package.json` and the marketplace manifest name the features; README: Privacy section, compatibility says desktop 2.0.2 checked and the web app not tested; CHANGELOG: icon, formula guard, tweet stop, and `[Unreleased]` cut to `[0.1.0] - 2026-10-18` (redate if the tag lands later).
 Deferred: a live run in the web app (app.logseq.com) before claiming web support. No dependencies, so no audit; CI and the publish workflow both run the tests.
+
+## TypeScript port (C12, 2026-10-18)
+
+- [x] C12 Owner: the plugin standards apply here too: TypeScript, Biome (not ESLint), TDD, KISS, DRY. Ported to the `logseq-plugin-dev` layout: `src/index.ts` (only SDK import), `src/sdk.ts` (SDK adapter + the settings `button` type 0.3.4 lacks), `src/types.ts`, `src/loader.ts`, `src/tweaks/model.ts`, `src/ui/{dom,tweaks-dialog}.ts` + `tweaks.css`, `src/features/tweet-height.ts`, `src/features/table-export/{format,values,collect,view,index}.ts`. Tests written first and watched failing (all 10 files red), then the code: 61 tests (was 41; new: readView, the Export button and menu, the Tweaks dialog, the loader, all in happy-dom where they touch the DOM). One `el()` builds DOM for both the dialog and the Export menu. Vite 7, Vitest 4, TypeScript 5, happy-dom 20, Biome 2.5 (Planner's versions); `npm audit` clean. CI and Publish run typecheck, lint, test, build; the release zip holds `dist/`, `package.json`, the icons, README, LICENSE, CHANGELOG. Icons moved to the repo root.
+  Verified live (Logseq-DB 2.0.2, second instance, throwaway graph seeded from the C10 EDN): the instance loads `dist/index.html`; Export button on the tag and the query table; the menu offers the formats switched on (the owner's settings have JSON off); Copy for spreadsheet (clipboard captured in the instance, not the system one) gave the query table's rows in screen order; Tweaks opens from the palette (search focused) and from the settings button (settings modal closed, frame on top); the settings page lists the button, headings and every switch. The shared settings file was not changed.
+  Found, not from the port (the JS did the same): in a tag table whose rows have identical `updated-at` (an EDN import stamps them in the same ms), the screen breaks the tie by entity id descending, the export by id ascending. Core has two paths (`sort-eids-from-avet` walks the AVET index in sort direction; `sort-eids-by-sorting` keeps input order) and which one 2.0.2 takes for a small table is unclear. Rare in real graphs; left open.
+
