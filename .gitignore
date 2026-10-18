@@ -3,9 +3,6 @@ node_modules/
 dist/
 *.zip
 
-# generated test graph and local feedback snapshots (npm run lab / lab:feedback)
-tools/theme-lab/theme-lab.edn
-feedback/
 
 # scratch, env, local overrides
 tmp/

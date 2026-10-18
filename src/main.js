@@ -8,7 +8,7 @@ const running = new Map()
 
 const sync = () => {
   for (const f of features) {
-    const on = logseq.settings[f.id] !== false
+    const on = tweaks.isOn(logseq.settings, f.id)
     if (on && !running.has(f.id)) running.set(f.id, f.start(host, logseq))
     if (!on && running.has(f.id)) { running.get(f.id)(); running.delete(f.id) }
   }
